@@ -17,7 +17,7 @@
             <?php foreach ($courseList as $course) : ?>
                 <tr>
                 <th scope="row"><?=$course->getIdCourse();?></th>
-                <td><?=$course->getName();?></td>
+                <td><a href="index.php?controller=course&action=show&id=<?= $course->getIdCourse(); ?>"><?= $course->getName(); ?></a></td>
                 <td><?=$course->getDateCourse();?></td>
                 </tr>
             <?php endforeach; ?>
@@ -48,13 +48,13 @@
             <tbody>
             <?php foreach ($coureurList as $coureur) : ?>
                 <tr>
-                <th scope="row"><?= $coureur["id_coureur"]; ?></th>
-                <td><?= $coureur["nom"]; ?></td>
-                <td><?= $coureur["prenom"]; ?></td>
-                <td><?= $coureur["nationalite"]; ?></td>
-                <td><?= $coureur["date_naissance"]; ?></td>
-                <td><?= $coureur["id_equipe"]; ?></td>
-                <td><?= $coureur["compteur_course"]; ?></td>
+                <th scope="row"><?=$coureur->getIdCoureur();?></th>
+                <td><?=$coureur->getFirstName();?></td>
+                <td><?=$coureur->getLastName();?></td>
+                <td><?=$coureur->getNationalite();?></td>
+                <td><?=$coureur->getDateNaissance();?></td>
+                <td><?=$coureur->getIdEquipe();?></td>
+                <td><?=$coureur->getCompteurCourse();?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

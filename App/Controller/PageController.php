@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CourseRepository;
+use App\Repository\CoureurRepository;
 
 class PageController extends Controller
 {
@@ -61,8 +62,13 @@ class PageController extends Controller
                 $courseRepository = new CourseRepository();
                 $courseList = $courseRepository->findAll();
 
+                // Récupérez la liste des coureurs depuis le repository des coureurs
+                $coureurRepository = new CoureurRepository();
+                $coureurList = $coureurRepository->findAll();
+
                 $this->render('page/home',[
-                    'courseList' => $courseList
+                    'courseList' => $courseList,
+                    'coureurList'=> $coureurList,
                 ]);
         } catch(\Exception $e){
             $this->render('errors/default', [
