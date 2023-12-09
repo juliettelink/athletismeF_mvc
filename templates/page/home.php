@@ -16,9 +16,9 @@
             <tbody>
             <?php foreach ($courseList as $course) : ?>
                 <tr>
-                <th scope="row"><?= $course["id_course"]; ?></th>
-                <td><?= $course["nom"]; ?></td>
-                <td><?= $course["date_course"]; ?></td>
+                <th scope="row"><?=$course->getIdCourse();?></th>
+                <td><?=$course->getName();?></td>
+                <td><?=$course->getDateCourse();?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

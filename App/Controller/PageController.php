@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CourseRepository;
+
 class PageController extends Controller
 {
     public function route(): void
@@ -53,9 +55,20 @@ class PageController extends Controller
     */
     protected function home()
     {
-        $this->render('page/home', [
-        ]);
+        try {
 
+                // charger la course par un appel au repository
+                $courseRepository = new CourseRepository();
+                $courseList = $courseRepository->findAll();
+
+                $this->render('page/home',[
+                    'courseList' => $courseList
+                ]);
+        } catch(\Exception $e){
+            $this->render('errors/default', [
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
 }

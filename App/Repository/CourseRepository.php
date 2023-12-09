@@ -39,4 +39,38 @@ class CourseRepository
         return $courseEntity;
 
     }
+
+    public function findAll()
+    {
+        try {
+            // appel bdd
+            $mysql = Mysql::getInstance();
+            $pdo = $mysql->getPDO();
+
+            $query = $pdo->query('SELECT * FROM course');
+            $coursesData = $query->fetchAll($pdo::FETCH_ASSOC);
+
+            $courseList = [];
+
+            foreach ($coursesData as $courseData) {
+                $courseEntity = new Course();
+
+                foreach ($courseData as $key => $value) {
+                    $setterMethod = 'set' . StringTools::toPascalCase($key);
+
+                    // Vérifiez si la méthode existe dans la classe Course avant de l'appeler
+                    if (method_exists($courseEntity, $setterMethod)) {
+                        $courseEntity->{$setterMethod}($value);
+                    }
+                }
+
+                $courseList[] = $courseEntity;
+            }
+
+            return $courseList;
+        } catch (\Exception $e) {
+            // Gérez les exceptions, par exemple, affichez un message d'erreur
+            throw new \Exception("Erreur lors de la récupération de la liste des cours : " . $e->getMessage());
+        }
+    }
 }
