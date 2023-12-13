@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Repository\CourseRepository;
 use App\Repository\CoureurRepository;
+use App\Repository\ScoreRepository;
+
 
 class PageController extends Controller
 {
@@ -66,9 +68,13 @@ class PageController extends Controller
                 $coureurRepository = new CoureurRepository();
                 $coureurList = $coureurRepository->findAll();
 
+                $scoreRepository = new scoreRepository();
+                $scoreList = $scoreRepository->findAll();
+
                 $this->render('page/home',[
                     'courseList' => $courseList,
                     'coureurList'=> $coureurList,
+                    'scoreList'=> $scoreList
                 ]);
         } catch(\Exception $e){
             $this->render('errors/default', [

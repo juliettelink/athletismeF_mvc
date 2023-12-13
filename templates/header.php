@@ -26,8 +26,9 @@
       </ul>
 
       <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2">Login</button>
-        <button type="button" class="btn btn-primary">Sign-up</button>
+        <a href="index.php?controller=auth&action=login" type="button" class="btn btn-primary">Connexion</a>
+        <a href="index.php?controller=user&action=register" type="button" class="btn btn-secondary">Inscription</a>
+        
       </div>
     </header>
  

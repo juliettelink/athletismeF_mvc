@@ -8,7 +8,7 @@ use App\Tools\StringTools;
 
 
 
-class CourseRepository
+class CourseRepository 
 {
     public function findOneById(int $id)
     {
@@ -23,14 +23,7 @@ class CourseRepository
         //var_dump($course);
 
 
-        //$course = ['id'=> 1, "name" =>'course test',"description"=>'description test',"date"=>'date test'];
-
         $courseEntity = new Course();
-        // $courseEntity->setId($course['id_course']);
-        // $courseEntity->setName($course['name']);
-        // $courseEntity->setDescription($course['description']);
-        // $courseEntity->setDate($course['date_course']);
-        // $courseEntity->setImage($course['image']);
 
         foreach ($course as $key => $value){
             $courseEntity->{'set' .StringTools::toPascalCase($key)} ($value);

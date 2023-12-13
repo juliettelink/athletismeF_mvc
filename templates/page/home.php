@@ -67,7 +67,7 @@
 <!--  affiche les données  DE LA VUE de score_coureur -->
     <h2>Liste des Scores des Coureurs :</h2>
         <table class="table table-striped">
-            <?php if (isset($scoreCoureurList) && !empty($scoreCoureurList)) : ?>
+            <?php if (isset($scoreList) && !empty($scoreList)) : ?>
                 <thead>
                     <tr>
                         <th scope="col">Nom du coureur</th>
@@ -78,13 +78,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($scoreCoureurList as $score) : ?>
+                    <?php foreach ($scoreList as $score) : ?>
                         <tr>
-                            <th scope="row"><?= $score["nom_coureur"]; ?></th>
-                            <td><?= $score["prenom"]; ?></td>
-                            <td><?= $score["nom_course"]; ?></td>
-                            <td><?= $score["date_course"]; ?></td>
-                            <td><?= $score["position_coureur"]; ?></td>
+                            <th scope="row"><?= $score->getFirstName(); ?></th>
+                            <td><?= $score->getLastName(); ?></td>
+                            <td><?= $score->getName(); ?></td>
+                            <td><?= $score->getDateCourse(); ?></td>
+                            <td><?= $score->getPositionCoureur(); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

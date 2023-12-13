@@ -1,7 +1,9 @@
 <?php
 namespace App\Entity;
 
-class Course {
+class Course extends Entity
+
+{
 
     protected ?int $id_course = null;
     protected string $name;

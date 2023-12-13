@@ -14,6 +14,15 @@ class Controller
                         $pageController = new PageController();
                         $pageController->route();
                         break;
+                    case 'auth':
+                        //charger controleur auth
+                        $controller = new AuthController();
+                        $controller->route();
+                        break;
+                    case 'user':
+                        $controller = new UserController();
+                        $controller->route();
+                        break;
                     case 'course':
                         //charger controleur course
                         $pageController = new CourseController();

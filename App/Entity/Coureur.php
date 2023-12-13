@@ -1,7 +1,8 @@
 <?php
 namespace App\Entity;
 
-class Coureur {
+class Coureur extends Entity
+{
 
     protected ?int $id_coureur = null;
     protected string $first_name;
