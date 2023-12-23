@@ -8,6 +8,7 @@ use App\Tools\StringTools;
 
 
 
+
 class CourseRepository 
 {
     public function findOneById(int $id)
@@ -64,6 +65,62 @@ class CourseRepository
         } catch (\Exception $e) {
             // Gérez les exceptions, par exemple, affichez un message d'erreur
             throw new \Exception("Erreur lors de la récupération de la liste des cours : " . $e->getMessage());
+        }
+    }
+
+    public function add(Course $course): void
+    {
+        try{
+
+            
+            $mysql = Mysql::getInstance();
+            $pdo = $mysql->getPDO();
+
+            $query = $pdo->prepare('INSERT INTO course(name, description, date_course, image) VALUE (?, ?, ?, ?)');
+            $query->bindValue(1, $course->getName(), $pdo::PARAM_STR);
+            $query->bindValue(2, $course->getDescription(), $pdo::PARAM_STR);
+            $query->bindValue(3, $course->getDateCourse(), $pdo::PARAM_STR);
+            $query->bindValue(4, $course->getImage(), $pdo::PARAM_STR);
+            $query->execute();
+
+        } catch (\Exception $e) {
+            
+            throw new \Exception("Erreur lors de l'ajout de la course : " . $e->getMessage());
+        }
+    }
+
+    public function delete(int $id)
+    {
+        try {
+            $mysql = Mysql::getInstance();
+            $pdo = $mysql->getPDO();
+
+            $query = $pdo->prepare('DELETE FROM course WHERE id_course = :id');
+            $query->bindValue(':id', $id, $pdo::PARAM_INT);
+            $query->execute();
+        } catch (\Exception $e) {
+            
+            throw new \Exception("Erreur lors de la suppression de la course : " . $e->getMessage());
+        }
+    }
+
+    public function update(Course $course)
+    {
+        try {
+            $mysql = Mysql::getInstance();
+            $pdo = $mysql->getPDO();
+
+            $query = $pdo->prepare('UPDATE course SET name= :name, description= :description, date_course= :date_course, image = :image WHERE id_course = :id');
+            $query->bindValue(':id',$course->getIdCourse(), $pdo::PARAM_INT);
+            $query->bindValue(':name',$course->getName(), $pdo::PARAM_STR);
+            $query->bindValue(':description',$course->getDescription(), $pdo::PARAM_STR);
+            $query->bindValue(':date_course',$course->getDateCourse(), $pdo::PARAM_STR);
+            $query->bindValue(':image',$course->getImage(), $pdo::PARAM_STR);
+            
+            $query->execute();
+        } catch (\Exception $e) {
+            
+            throw new \Exception("Erreur lors de la suppression de la course : " . $e->getMessage());
         }
     }
 }
