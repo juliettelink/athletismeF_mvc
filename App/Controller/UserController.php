@@ -16,8 +16,14 @@ class UserController extends Controller
                     case 'register':
                         $this->register();
                         break;
+                    case 'list':
+                        $this->list();
+                        break;
                     case 'delete':
-                        // Appeler méthode delete()
+                            $this->delete();
+                            break;
+                    case 'confirmDelete':
+                        $this->confirmDelete();
                         break;
                     default:
                         throw new \Exception("Cette action n'existe pas : " . $_GET['action']);
@@ -32,7 +38,7 @@ class UserController extends Controller
             ]);
         }
     }
-  
+
     protected function register()
     {
         try {
@@ -66,6 +72,68 @@ class UserController extends Controller
             ]);
         } 
 
+    }
+
+    protected function list()
+    {
+        try {
+            // Charge toutes les courses depuis la base de données
+            $userRepository = new UserRepository();
+            $users = $userRepository->getAllUsers();
+
+            // Affiche la liste des courses
+            $this->render('user/list', ['users' => $users]);
+        } catch (\Exception $e) {
+            $this->render('errors/default', ['error' => $e->getMessage()]);
+        }
+    }
+
+    protected function delete()
+    {
+        try {
+            if (!User::isAdmin()) {
+                throw new \Exception("Accès interdit. Vous n'avez pas les droits nécessaires.");
+            }
+    
+            if (isset($_GET['id'])) {
+                $id_user = (int)$_GET['id'];
+    
+                $userRepository = new UserRepository();
+                $user = $userRepository->findOneById($id_user);
+                
+                // Affiche la confirmation de suppression
+                if ($user){
+                $this->render('user/delete', ['user' => $user]);
+                } else {
+                    throw new \Exception("Utilisateur non trouvé.");
+                }
+            } else {
+                throw new \Exception("l'id est manquant");
+            }
+        } catch (\Exception $e) {
+        $this->render('errors/default', ['error' => $e->getMessage()]);
+        }
+    }  
+
+    protected function confirmDelete()
+    {
+        try {
+            if (isset($_POST['id'])) {
+                $id_user = (int)$_POST['id'];
+
+                // Supprime la course depuis le repository
+                $userRepository = new UserRepository();
+                $userRepository->delete($id_user);
+
+                // Redirection vers la liste des courses après la suppression
+                header('Location: ?controller=user&action=list');
+                exit;
+            } else {
+                throw new \Exception("l'id est manquant");
+            }
+        } catch (\Exception $e) {
+            $this->render('errors/default', ['error' => $e->getMessage()]);
+        }
     }
 
 }

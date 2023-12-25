@@ -49,7 +49,7 @@ class AuthController extends Controller
                 // Regénère l'id session pour éviter la fixation de session
                 session_regenerate_id(true);
                 $_SESSION['user'] = [
-                    'id' => $user->getId(),
+                    'id' => $user->getIdUser(),
                     'email' => $user->getEmail(),
                     'first_name' => $user->getFirstName(),
                     'last_name' => $user->getLastName(),

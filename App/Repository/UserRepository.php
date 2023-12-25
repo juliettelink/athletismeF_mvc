@@ -25,6 +25,28 @@ class UserRepository
             return false;
         }
     }
+
+    public function getAllUsers()
+{
+    try {
+        $mysql = Mysql::getInstance();
+        $pdo = $mysql->getPDO();
+
+        $query = $pdo->prepare('SELECT * FROM user');
+        $query->execute();
+        $users = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $userObjects = [];
+        foreach ($users as $userData) {
+            $userObjects[] = User::createAndHydrate($userData);
+        }
+
+        return $userObjects;
+    } catch (\Exception $e) {
+        throw new \Exception("Erreur lors de la récupération des utilisateurs : " . $e->getMessage());
+    }
+}
+
     public function findOneByEmail(string $email)
     {
         $mysql = Mysql::getInstance();
@@ -43,18 +65,15 @@ class UserRepository
 
     public function persist(User $user)
     {
-        $mysql = Mysql::getInstance();
+            $mysql = Mysql::getInstance();
             $pdo = $mysql->getPDO();
         
-        if ($user->getId() !== null) {
-            
-    
+        if ($user->getIdUser() !== null) {
             $query = $pdo->prepare('UPDATE user SET first_name = :first_name, last_name = :last_name,  
                                                     email = :email, password = :password
                                                     WHERE id = :id'
                 );
-                $query->bindValue(':id', $user->getId(), $pdo::PARAM_INT);
-           
+                $query->bindValue(':id', $user->getIdUser(), $pdo::PARAM_INT);
 
         } else {
             $query = $pdo->prepare('INSERT INTO user (first_name, last_name, email, password, role) 
@@ -70,5 +89,19 @@ class UserRepository
         $query->bindValue(':password', password_hash($user->getPassword(), PASSWORD_DEFAULT), $pdo::PARAM_STR);
 
         return $query->execute();
+    }
+
+    public function delete(int $id): void
+    {
+        try{
+            $mysql = Mysql::getInstance();
+            $pdo = $mysql->getPDO();
+    
+            $query = $pdo->prepare('DELETE FROM user WHERE id_user = :id');
+            $query->bindValue(':id', $id, $pdo::PARAM_INT);
+            $query->execute();
+        } catch (\Exception $e) {
+            throw new \Exception("Erreur lors de la suppression de l'utilisateur : " . $e->getMessage());
+        }
     }
 }

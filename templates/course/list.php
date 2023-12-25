@@ -28,3 +28,4 @@
 <a href="?controller=course&action=add&id=<?= $course->getIdCourse(); ?>">Ajouter une course</a>
 
 <?php require_once _ROOTPATH_.'\templates\footer.php'; ?>
+

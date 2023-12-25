@@ -27,7 +27,7 @@
             <?php else : ?>
                 <li>Aucune course disponible</li>
             <?php endif; ?>
-        <a href="index.php?controller=course&action=list" type="button" class="btn btn-outline-primary me-2">Ajout d'une course</a>
+        <a href="index.php?controller=course&action=list" type="button" class="btn btn-outline-primary me-2">Ajout/Suppression/Modification</a>
 
             <h2>Liste des Coureurs :</h2>
         

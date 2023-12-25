@@ -6,30 +6,44 @@ namespace App\Entity;
 
 class User extends Entity
 {
-    protected ?int $id = null;
+    protected ?int $id_user = null;
     protected ?string $email = '';
     protected ?string $password = '';
     protected ?string $first_name = '';
     protected ?string $last_name = '';
     protected ?string $role = '';
 
-    public function getId(): ?int
+    
+
+    /**
+     * Get the value of id_user
+     */
+    public function getIdUser(): ?int
     {
-        return $this->id;
+        return $this->id_user;
     }
 
-    public function setId(?int $id): self
+    /**
+     * Set the value of id_user
+     */
+    public function setIdUser(?int $id_user): self
     {
-        $this->id = $id;
+        $this->id_user = $id_user;
 
         return $this;
     }
 
+    /**
+     * Get the value of email
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * Set the value of email
+     */
     public function setEmail(?string $email): self
     {
         $this->email = $email;
@@ -37,11 +51,17 @@ class User extends Entity
         return $this;
     }
 
+    /**
+     * Get the value of password
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * Set the value of password
+     */
     public function setPassword(?string $password): self
     {
         $this->password = $password;
@@ -49,11 +69,17 @@ class User extends Entity
         return $this;
     }
 
+    /**
+     * Get the value of first_name
+     */
     public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
+    /**
+     * Set the value of first_name
+     */
     public function setFirstName(?string $first_name): self
     {
         $this->first_name = $first_name;
@@ -61,11 +87,17 @@ class User extends Entity
         return $this;
     }
 
+    /**
+     * Get the value of last_name
+     */
     public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
+    /**
+     * Set the value of last_name
+     */
     public function setLastName(?string $last_name): self
     {
         $this->last_name = $last_name;

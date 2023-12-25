@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Entity\User;
 use App\Repository\CourseRepository;
 
 class CourseController extends Controller
@@ -13,8 +14,7 @@ class CourseController extends Controller
             if (isset($_GET['action'])){
                 switch ($_GET['action']) {
                     case 'show':
-                        // appeler la methode show()
-                        $this->show();
+                            $this->show();
                         break;
                     case 'list':
                         $this->list();
@@ -30,7 +30,7 @@ class CourseController extends Controller
                             $this->confirmDelete();
                         break;
                     case 'add';
-                        $this-> add();
+                            $this->add();
                         break;
                     case 'create';
                         $this-> create();
@@ -92,6 +92,9 @@ class CourseController extends Controller
     protected function edit()
     {
         try {
+            if (!User::isAdmin()) {
+                throw new \Exception("Accès interdit. Vous n'avez pas les droits nécessaires.");
+            }
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Traitement du formulaire d'édition
                 $this->update();
@@ -142,6 +145,9 @@ class CourseController extends Controller
         protected function delete()
     {
         try {
+            if (!User::isAdmin()) {
+                throw new \Exception("Accès interdit. Vous n'avez pas les droits nécessaires.");
+            }
             if (isset($_GET['id'])) {
                 $id_course = (int)$_GET['id'];
 
