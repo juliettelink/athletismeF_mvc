@@ -1,4 +1,8 @@
-<?php require_once _ROOTPATH_.'\templates\header.php'; ?>
+<?php
+
+use App\Entity\User;
+
+ require_once _ROOTPATH_.'\templates\header.php'; ?>
 
         <h1 class="text-center">Liste d'athlétisme</h1> 
         <h2>Liste des Courses :</h2>
@@ -27,7 +31,9 @@
             <?php else : ?>
                 <li>Aucune course disponible</li>
             <?php endif; ?>
-        <a href="index.php?controller=course&action=list" type="button" class="btn btn-outline-primary me-2">Ajout/Suppression/Modification</a>
+            <?php if (User::isAuthenticated()): ?>
+                <a href="index.php?controller=course&action=list" type="button" class="btn btn-outline-primary me-2">Ajout/Suppression/Modification</a>
+            <?php endif; ?>
 
             <h2>Liste des Coureurs :</h2>
         

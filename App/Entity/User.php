@@ -192,5 +192,8 @@ class User extends Entity
     }
 
 
-
+    public static function isAuthenticated(): bool
+    {
+        return isset($_SESSION['user']);
+    }
 }

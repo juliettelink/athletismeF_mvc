@@ -9,29 +9,33 @@
 
 </head>
 <body>
-<div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-    <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-          <img width="150" src="assets/images/logo.jpg">
-        </a>
-      </div>
+  <div class="container">
+      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <div class="col-md-3 mb-2 mb-md-0">
+          <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+            <img width="150" src="assets/images/logo.jpg">
+          </a>
+        </div>
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="index.php?controller=page&action=home" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="#" class="nav-link px-2">Features</a></li>
-        <li><a href="#" class="nav-link px-2">Pricing</a></li>
-        <li><a href="#" class="nav-link px-2">FAQs</a></li>
-        <li><a href="index.php?controller=page&action=about" class="nav-link px-2">About</a></li>
-      </ul>
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="index.php?controller=page&action=home" class="nav-link px-2 link-secondary">Acceuil</a></li>
+          <li><a href="index.php?controller=page&action=about" class="nav-link px-2">A propos</a></li>
+        </ul>
 
-      <div class="col-md-3 text-end">
-        <a href="index.php?controller=auth&action=login" type="button" class="btn btn-primary">Connexion</a>
-        <a href="index.php?controller=user&action=register" type="button" class="btn btn-secondary">Inscription</a>
-        
-      </div>
-    </header>
- 
+        <div class="col-md-3 text-end">
+          <?php
 
+use App\Entity\User;
 
-<main>
+        if (User::isAuthenticated()): ?>
+            <a href="index.php?controller=auth&action=logout" type="button" class="btn btn-outline-danger me-2">Déconnexion</a>
+          <?php else: ?>
+            <a href="index.php?controller=auth&action=login" type="button" class="btn btn-outline-primary me-2">Connexion</a>
+          <?php endif; ?>
+          <a href="index.php?controller=user&action=register" type="button" class="btn btn-secondary">Inscription</a>
+          
+        </div>
+      </header>
+  
+
+  <main>
