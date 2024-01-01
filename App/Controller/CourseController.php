@@ -128,7 +128,8 @@ class CourseController extends Controller
         $updatedCourse->setName($_POST['name']);
         $updatedCourse->setDescription($_POST['description']);
         $updatedCourse->setDateCourse($_POST['date_course']);
-        $updatedCourse->setImage($_POST['image']);
+        //pour le traitement de l'image
+        $updatedCourse->setImage($this->handleImageUpload());
 
         // Mettez à jour la course dans la base de données
         $courseRepository = new CourseRepository();
@@ -203,19 +204,19 @@ class CourseController extends Controller
 
     private function create()
     {
-        var_dump($_POST);
-        // Récupérez les données du formulaire POST
         $name = $_POST['name'];
         $description = $_POST['description'];
         $date_course = $_POST['date_course'];
-        $image = $_POST['image'];
+        
+        //Traitement de l'image
+        $imagePath = $this->handleImageUpload();
 
-        // Créez un objet Course avec les données du formulaire
+
         $newCourse = new Course();
         $newCourse->setName($name);
         $newCourse->setDescription($description);
         $newCourse->setDateCourse($date_course);
-        $newCourse->setImage($image);
+        $newCourse->setImage($imagePath);
 
 
         // Ajoutez la nouvelle course à la base de données
@@ -226,4 +227,41 @@ class CourseController extends Controller
         header('Location: ?controller=course&action=list');
         exit;
     }
+
+    private function handleImageUpload()
+    {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $uploadDir = 'uploads/courses/'; 
+            $uploadFile = $uploadDir . basename($_FILES['image']['name']);
+    
+            // Déplace le fichier téléchargé vers le dossier d'uploads
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                return $uploadFile;
+            } else {
+                // Gestion des erreurs lors du téléchargement du fichier
+                throw new \Exception('Erreur lors du téléchargement du fichier.');
+            }
+        } elseif (!empty($_POST['external_image_url'])) {
+            // Si une URL externe est fournie, téléchargez l'image depuis cette URL
+            $externalImageUrl = $_POST['external_image_url'];
+            $imageContent = file_get_contents($externalImageUrl);
+    
+            if ($imageContent !== false) {
+                $uploadDir = 'uploads/courses/';
+                $uploadFile = $uploadDir . basename($externalImageUrl);
+                
+                // Enregistrez le contenu de l'image dans le fichier local
+                file_put_contents($uploadFile, $imageContent);
+                
+                return $uploadFile;
+            } else {
+                // Gestion des erreurs lors du téléchargement de l'image externe
+                throw new \Exception('Erreur lors du téléchargement de l\'image externe.');
+            }
+        } else {
+            // Aucun fichier téléchargé et aucune URL externe fournie
+            return 'uploads/courses/defaultStade.jpg'; 
+        }
+    }
+    
 }

@@ -1,10 +1,16 @@
 <?php require_once _TEMPLATEPATH_ . '/header.php';
 /** @var \App\Entity\User $user */
+
+$csrfToken = bin2hex(random_bytes(32));
+$_SESSION['csrf_token'] = $csrfToken;
+
 ?>
 
 <h1><?= $pageTitle; ?></h1>
 
 <form method="POST">
+    <!-- pour stoker le jeton CRSF -->
+    <input type="hidden" name="csrf_token" value="<?= $csrfToken ?>">
     <div class="mb-3">
         <label for="first_name" class="form-label">Prénom</label>
         <input type="text" class="form-control <?=(isset($errors['first_name']) ? 'is-invalid': '') ?>" id="first_name" name="first_name" value="">

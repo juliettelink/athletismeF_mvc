@@ -39,19 +39,25 @@ class UserController extends Controller
         }
     }
 
+    
     protected function register()
     {
         try {
             $errors = [];
             $user = new User();
-
+    
             if (isset($_POST['saveUser'])) {
                 
+                // Vérifie le jeton CSRF
+                if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                    throw new \Exception('Tentative de CSRF détectée!');
+                }
+    
                 $user->hydrate($_POST);
                 $user->setRole(ROLE_USER);
-
+    
                 $errors = $user->validate();
-
+    
                 if (empty($errors)) {
                     $userRepository = new UserRepository();
                     
@@ -59,19 +65,18 @@ class UserController extends Controller
                     header('Location: index.php?controller=auth&action=login');
                 }
             }
-
+    
             $this->render('user/add_edit', [
                 'user' => '',
                 'pageTitle' => 'Inscription',
                 'errors' => $errors
             ]);
-
+    
         } catch (\Exception $e) {
             $this->render('errors/default', [
                 'error' => $e->getMessage()
             ]);
         } 
-
     }
 
     protected function list()

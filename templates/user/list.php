@@ -22,7 +22,7 @@
                     <td><?= $user->getLastName(); ?></td>
                     <td><?= $user->getEmail(); ?></td>
                     <td>
-                        <a href="?controller=user&action=delete&id=<?= $user->getIdUser(); ?>">Supprimer</a>
+                        <a href="?controller=user&action=delete&id=<?= $user->getIdUser(); ?>" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

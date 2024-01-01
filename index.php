@@ -11,6 +11,7 @@ session_start();
 
 define('_ROOTPATH_', __DIR__);
 define('_TEMPLATEPATH_', __DIR__.'/templates');
+
 define("ROLE_USER", "user");
 define("ROLE_ADMIN", "admin");
 

@@ -4,6 +4,10 @@ use App\Entity\User;
 
  require_once _ROOTPATH_.'\templates\header.php'; ?>
 
+    <?php if (User::isAdmin()): ?>
+        <a href="index.php?controller=user&action=list" type="button" class="btn btn-outline-primary me-2">Suppression d'un compte</a>
+    <?php endif; ?>
+
         <h1 class="text-center">Liste d'athlétisme</h1> 
         <h2>Liste des Courses :</h2>
         
@@ -20,9 +24,9 @@ use App\Entity\User;
             <tbody>
             <?php foreach ($courseList as $course) : ?>
                 <tr>
-                <th scope="row"><?=$course->getIdCourse();?></th>
-                <td><a href="index.php?controller=course&action=show&id=<?= $course->getIdCourse(); ?>"><?= $course->getName(); ?></a></td>
-                <td><?=$course->getDateCourse();?></td>
+                <th scope="row"><?=htmlspecialchars($course->getIdCourse());?></th>
+                <td><a href="index.php?controller=course&action=show&id=<?= $course->getIdCourse(); ?>"><?= htmlspecialchars($course->getName()); ?></a></td>
+                <td><?=htmlspecialchars($course->getDateCourse());?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -54,13 +58,13 @@ use App\Entity\User;
             <tbody>
             <?php foreach ($coureurList as $coureur) : ?>
                 <tr>
-                <th scope="row"><?=$coureur->getIdCoureur();?></th>
-                <td><?=$coureur->getFirstName();?></td>
-                <td><?=$coureur->getLastName();?></td>
-                <td><?=$coureur->getNationalite();?></td>
-                <td><?=$coureur->getDateNaissance();?></td>
-                <td><?=$coureur->getIdEquipe();?></td>
-                <td><?=$coureur->getCompteurCourse();?></td>
+                <th scope="row"><?=htmlspecialchars($coureur->getIdCoureur());?></th>
+                <td><?=htmlspecialchars($coureur->getFirstName());?></td>
+                <td><?=htmlspecialchars($coureur->getLastName());?></td>
+                <td><?=htmlspecialchars($coureur->getNationalite());?></td>
+                <td><?=htmlspecialchars($coureur->getDateNaissance());?></td>
+                <td><?=htmlspecialchars($coureur->getIdEquipe());?></td>
+                <td><?=htmlspecialchars($coureur->getCompteurCourse());?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -86,11 +90,11 @@ use App\Entity\User;
                 <tbody>
                     <?php foreach ($scoreList as $score) : ?>
                         <tr>
-                            <th scope="row"><?= $score->getFirstName(); ?></th>
-                            <td><?= $score->getLastName(); ?></td>
-                            <td><?= $score->getName(); ?></td>
-                            <td><?= $score->getDateCourse(); ?></td>
-                            <td><?= $score->getPositionCoureur(); ?></td>
+                            <th scope="row"><?= htmlspecialchars($score->getFirstName()); ?></th>
+                            <td><?= htmlspecialchars($score->getLastName()); ?></td>
+                            <td><?= htmlspecialchars($score->getName()); ?></td>
+                            <td><?= htmlspecialchars($score->getDateCourse()); ?></td>
+                            <td><?= htmlspecialchars($score->getPositionCoureur()); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

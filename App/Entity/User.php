@@ -123,9 +123,7 @@ class User extends Entity
         return $this;
     }
 
-    /*
-        Pourrait être déplacé dans une classe UserValidator
-    */
+
     public function validate(): array
     {
         $errors = [];
@@ -140,15 +138,28 @@ class User extends Entity
         } else if (!filter_var($this->getEmail(), FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'L\'email n\'est pas valide';
         }
+        $password = $this->getPassword();
         if (empty($this->getPassword())) {
             $errors['password'] = 'Le champ mot de passe ne doit pas être vide';
+        }else{
+            //complexité du mot de passe
+            if(!$this->isStrongPassword($password)){
+                $error['password'] = 'le mot de passe doit contenir au moins 8 caractères, avec des lettres majuscules, des lettres minuscules, des chiffres et des caractères spéciaux.';
+            }
         }
         return $errors;
     }
 
-    /*
-        Pourrait être déplacé dans une classe Security
-    */
+    private function isStrongPassword(string $password): bool
+    {
+        $hasUppercase = preg_match('/[A-Z]/', $password);
+        $hasLowercase = preg_match('/[a-z]/', $password);
+        $hasNumber = preg_match('/\d/', $password);
+        $hasSpecialChar = preg_match('/[^A-Za-z\d]/', $password);
+
+        return $hasUppercase && $hasLowercase && $hasNumber && $hasSpecialChar && strlen($password) >= 8;
+    }
+
     public function verifyPassword(string $password): bool
     {
         if (password_verify($password, $this->password)) {
@@ -158,34 +169,21 @@ class User extends Entity
         }
     }
 
-    /*
-        Pourrait être déplacé dans une classe Security
-    */
     public static function isLogged(): bool
     {
         return isset($_SESSION['user']);
     }
 
-
-    /*
-        Pourrait être déplacé dans une classe Security
-    */
     public static function isUser(): bool
     {
         return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'user';
     }
 
-    /*
-        Pourrait être déplacé dans une classe Security
-    */
     public static function isAdmin(): bool
     {
         return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin';
     }
 
-    /*
-        Pourrait être déplacé dans une classe Security
-    */
     public static function getCurrentUserId(): int|bool
     {
         return (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id']: false;

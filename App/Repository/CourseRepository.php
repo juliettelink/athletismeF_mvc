@@ -81,6 +81,10 @@ class CourseRepository
             $query->bindValue(2, $course->getDescription(), $pdo::PARAM_STR);
             $query->bindValue(3, $course->getDateCourse(), $pdo::PARAM_STR);
             $query->bindValue(4, $course->getImage(), $pdo::PARAM_STR);
+
+            if (!file_exists(dirname($course->getImage()))) {
+                mkdir(dirname($course->getImage()), 0777, true);
+            }
             $query->execute();
 
         } catch (\Exception $e) {
@@ -110,12 +114,25 @@ class CourseRepository
             $mysql = Mysql::getInstance();
             $pdo = $mysql->getPDO();
 
-            $query = $pdo->prepare('UPDATE course SET name= :name, description= :description, date_course= :date_course, image = :image WHERE id_course = :id');
+            // si une nouvelle image a été spécifiée
+            $imageUpdate = $course->getImage() ;//!== 'uploads/courses/defaultStade.jpg';
+
+            // Préparez la requête SQL
+            $sql = 'UPDATE course SET name = :name, description = :description, date_course = :date_course';
+            if ($imageUpdate) {
+                $sql .= ', image = :image';
+            }
+            $sql .= ' WHERE id_course = :id';
+
+            $query = $pdo->prepare($sql);
             $query->bindValue(':id',$course->getIdCourse(), $pdo::PARAM_INT);
             $query->bindValue(':name',$course->getName(), $pdo::PARAM_STR);
             $query->bindValue(':description',$course->getDescription(), $pdo::PARAM_STR);
             $query->bindValue(':date_course',$course->getDateCourse(), $pdo::PARAM_STR);
-            $query->bindValue(':image',$course->getImage(), $pdo::PARAM_STR);
+            
+            if ($imageUpdate) {
+                $query->bindValue(':image', $course->getImage(), $pdo::PARAM_STR);
+            }
             
             $query->execute();
         } catch (\Exception $e) {
